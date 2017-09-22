@@ -10,7 +10,7 @@ output:
 #### Pilot: Sara Altman
 #### Co-pilot: Maya Mathur  
 #### Start date: 04/07/2017
-#### End date: 07/16/2017  
+#### End date: 09/22/2017  
 
 -------
 
@@ -32,15 +32,11 @@ Two participants in the monolingual group displayed outlying values for one vari
 
 ------
 
-[The chunk below sets up some formatting options for the R Markdown document]
-
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ## Step 1: Load packages
-
-[Some useful packages are being loaded below. You can add any additional ones you might need to.]
 
 ```{r}
 library(tidyverse) # for data munging
@@ -54,9 +50,7 @@ library(lme4)
 library(stringr)
 library(pbkrtest)
 
-# temporary - change path later
-data_file <- "~/Dropbox/Personal computer/Independent studies/Mike's Cognition project on data sharing policy/Co-piloting/Copilot #4/set_DvcDF/data/data.xlsx"
-#data_file <- "data/data.xlsx"
+data_file <- "data/data.xlsx"
 
 #new data files
 full_data_file <- "From author (2017-7-28)/FullData_Exp1.csv"
@@ -639,8 +633,7 @@ data_tidy2 <-
   gather(starts_with("rt"), key = "block", value = "rt") %>% 
   mutate(block = str_replace(block, "rt_", ""),
          rt = 1000*rt,
-         group = as.factor(group),
-         group = relevel(group, ref = "Monolingual")) %>% 
+         group = factor(group, levels = c("Monolingual", "Bilingual"))) %>%
   left_join(demographics, by = c("id", "group"))
 
 data_tidy2 %>% 
@@ -673,15 +666,11 @@ data_tidy2 %>%
 
 The error bars all appear longer than those in the orginal plot. The response time means for each block appear similar. 
 
-
-
 ## Step 5: Conclusion
 
 Our initial attempt to reproduce analyses without the author's help led to many discrepancies. In our first contact with the author, he found that the wrong data file had been uploaded and provided the correct one (the differences were due to substantial amounts of rounding). When we used this file, some discrepancies were resolved (or became minor rather than major numerical errors), but many remained. Therefore, we contacted the author again. In our second contact, he reanalyzed the data himself and found numerous typos. We tried to reproduce his new results using additional details about these analyses with mixed success. Also, in some cases, he found no discrepancies with the published results even in cases in which we could not reproduce results. 
 
 Ultimately, because there are clearly (per the author) both major and minor numerical errors in the article, we not pursue finding the ultimate reasons for remaining discrepancies. 
-
-Lastly, we note that the article repeatedly refers to interaction as "mediation." These are completely distinct concepts.
 
 ```{r}
 codReport(Report_Type = 'joint',
@@ -689,10 +678,11 @@ codReport(Report_Type = 'joint',
           Insufficient_Information_Errors = 0,
           Decision_Errors = 0, 
           Major_Numerical_Errors = 10, 
-          Minor_Numerical_Errors = 31)
+          Minor_Numerical_Errors = 31,
+          Author_Assistance = T)
 ```
 
-[This function will output information about the package versions used in this report:]
+# Session information
 
 ```{r session_info, include=TRUE, echo=TRUE, results='markup'}
 devtools::session_info()
