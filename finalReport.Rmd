@@ -9,8 +9,10 @@ output:
 #### Article ID: DvcDF
 #### Pilot: Sara Altman
 #### Co-pilot: Maya Mathur  
-#### Start date: 04/07/2017
-#### End date: 09/22/2017  
+#### Start date: Apr 7 2017
+#### End date: Sep 22 2017 
+#### Final verification: Tom Hardwicke
+#### Date: Nov 9 2017
 
 -------
 
@@ -27,13 +29,18 @@ The experimenters conducted a t-test to compare the bilinguals' and monolinguals
 
 > We compared the bilinguals’ and monolinguals’ performance with regard to their first order accuracy (measured by percentage of correct responses), the difficulty of the trials (measured by dot difference) and response time of the choice and the confidence judgment (both measured in seconds). The results of all these analyses are summarised in Table 3.
 The monolingual group had a mean accuracy of 70.98%, with a standard deviation of 1.06%, whilst the bilingual group had mean accuracy of 70.79% with a standard deviation of 1.23%. This indi- cates that the staircase procedure successfully standardised accu- racy across participants. There were no significant group differences with regard to trial difficulty, with a mean dot differ- ence of 4.64 for the monolinguals and 4.34 for the bilinguals. Addi- tionally, with regards to response time for the confidence judgments there was no difference between the groups: the mono-lingual group took, on average, 1179 ms to respond compared to 1112 ms for the bilinguals.
-However, the groups did differ with regards to choice response time; an independent samples t-test showed that bilinguals (M = 2679 ms, SD = 923 ms) were significantly faster than mono- linguals (M = 3360 ms, SD = 1475 ms, t(50.38) =  2.18, p = .03, d = 0.55). A random slopes multilevel model (MLM) revealed that this relationship was significantly mediated by block (see Fig. 3; for more detailed information about the MLM fitting see Appendix A). Monolinguals were set to be the reference category for this analysis and all subsequent MLMs. The model tells us that the main-effect of group became statistically non-significant when the block-group interaction was accounted for (b = 283.11, t (64.03) = 0.71, p = 0.48). The main effect of block was also non- significant (b = 19.23, t(64.03) = 0.61, p = 0.54), meaning that the response speed of the monolinguals did not change significantly over time, when individual variation in intercepts and slopes were accounted for. The bilingual group ⁄ block interaction was signifi- cant (b =  88, t(64.03) =  2.01, p = .05), meaning that bilinguals, as a group, became faster as the task progressed.
-Two participants in the monolingual group displayed outlying values for one variable (difficulty and response time, respectively). In order to ensure that these outliers did not unduly influence the group-wise comparisons they were both capped at 3 standard deviations above the group mean. Capping these values did not change the results for difficulty (t(59.78) = 1.29, p = .20, d = 0.33) or for response time (t(55.17) = 2.24, p = .03, d = 0.57).
+
+> However, the groups did differ with regards to choice response time; an independent samples t-test showed that bilinguals (M = 2679 ms, SD = 923 ms) were significantly faster than mono- linguals (M = 3360 ms, SD = 1475 ms, t(50.38) =  2.18, p = .03, d = 0.55). A random slopes multilevel model (MLM) revealed that this relationship was significantly mediated by block (see Fig. 3; for more detailed information about the MLM fitting see Appendix A). Monolinguals were set to be the reference category for this analysis and all subsequent MLMs. The model tells us that the main-effect of group became statistically non-significant when the block-group interaction was accounted for (b = 283.11, t (64.03) = 0.71, p = 0.48). The main effect of block was also non- significant (b = 19.23, t(64.03) = 0.61, p = 0.54), meaning that the response speed of the monolinguals did not change significantly over time, when individual variation in intercepts and slopes were accounted for. The bilingual group ⁄ block interaction was signifi- cant (b =  88, t(64.03) =  2.01, p = .05), meaning that bilinguals, as a group, became faster as the task progressed.
+
+> Two participants in the monolingual group displayed outlying values for one variable (difficulty and response time, respectively). In order to ensure that these outliers did not unduly influence the group-wise comparisons they were both capped at 3 standard deviations above the group mean. Capping these values did not change the results for difficulty (t(59.78) = 1.29, p = .20, d = 0.33) or for response time (t(55.17) = 2.24, p = .03, d = 0.57).
 
 ------
 
 ```{r global_options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+
+# prepare an empty report object, we will update this each time we run compareValues2()
+reportObject <- data.frame("Article_ID" = NA, "valuesChecked" = 0, "eyeballs" = 0, "Total_df" = 0, "Total_p" = 0, "Total_mean" = 0, "Total_sd" = 0, "Total_se" = 0, "Total_ci" = 0, "Total_bf" = 0, "Total_t" = 0, "Total_F" = 0, "Total_es" = 0, "Total_median" = 0, "Total_irr" = 0, "Total_r" = 0, "Total_z" = 0, "Total_coeff" = 0, "Total_n" = 0, "Total_x2" = 0, "Total_other" = 0, "Insufficient_Information_Errors" = 0, "Decision_Errors" = 0, "Major_Numerical_Errors" = 0, "Minor_Numerical_Errors" = 0, "Major_df" = 0, "Major_p" = 0, "Major_mean" = 0, "Major_sd" = 0, "Major_se" = 0, "Major_ci" = 0, "Major_bf" = 0, "Major_t" = 0, "Major_F" = 0, "Major_es" = 0, "Major_median" = 0, "Major_irr" = 0, "Major_r" = 0, "Major_z" = 0, "Major_coeff" = 0, "Major_n" = 0, "Major_x2" = 0, "Major_other" = 0, "affectsConclusion" = NA, "error_typo" = 0, "error_specification" = 0, "error_analysis" = 0, "error_data" = 0, "error_unidentified" = 0, "Author_Assistance" = NA, "resolved_typo" = 0, "resolved_specification" = 0, "resolved_analysis" = 0, "resolved_data" = 0, "correctionSuggested" = NA, "correctionPublished" = NA)
 ```
 
 ## Step 1: Load packages
@@ -47,6 +54,7 @@ library(CODreports) # custom report functions
 library(readr)
 library(lsr)
 library(lme4)
+library(lmerTest)  # for inference
 library(stringr)
 library(pbkrtest)
 
@@ -109,7 +117,7 @@ data_tidy <-
 
 ### Pre-processing
 
-> Two participants in the monolingual group displayed outlying values for one variable (difficulty and response time, respectively). In order to ensure that these outliers did not unduly influence the group-wise comparisons they were both capped at 3 standard deviations above the group mean. Capping these values did not change the results for difficulty (t(59.78) = 1.29, p = .20, d = 0.33) or for response time (t(55.17) = 2.24, p = .03, d = 0.57).
+> Two participants in the monolingual group displayed outlying values for one variable (difficulty and response time, respectively). In order to ensure that these outliers did not unduly influence the group-wise comparisons they were both capped at 3 standard deviations above the group mean.
 
 The following code chunk confirms that there are two participants in the monolingual group with outlying values for one variable (difficulty and response time).
 
@@ -144,7 +152,11 @@ monolingual_capped <-
 bilingual_capped <- 
   data_tidy_capped %>% 
   filter(group == "Bilingual")
+```
 
+> Capping these values did not change the results for difficulty (t(59.78) = 1.29, p = .20, d = 0.33) or for response time (t(55.17) = 2.24, p = .03, d = 0.57).
+ 
+```{r}
 t_test_rt_capped <- t.test(x = monolingual_capped$first_rt, 
                            y = bilingual_capped$first_rt)
 d_rt_capped <- cohensD(x = monolingual_capped$first_rt, 
@@ -168,28 +180,41 @@ kable(t_tests_capped, digits = 2)
 
 The t-value for difficulty is slightly off. As are the degrees of freedom. The Cohen's d values are the same as originally reported, as are the p-values. 
 
-I compare the reported t-value and the calculated t-values for response time:
+Here we explcitly compare the values.
+
+Reported t-value and the calculated t-values for response time:
 
 ```{r}
-compareValues(reportedValue = 2.24, obtainedValue = 2.25)
+reportObject <- compareValues2(reportedValue = "55.17", obtainedValue = t_test_rt_capped$parameter, valueType = 'df')
+reportObject <- compareValues2(reportedValue = "2.24", obtainedValue = t_test_rt_capped$statistic[[1]], valueType = 't')
+reportObject <- compareValues2(reportedValue = ".03", obtainedValue = t_test_rt_capped$p.value, valueType = 'p')
+reportObject <- compareValues2(reportedValue = "0.57", obtainedValue = d_rt_capped, valueType = 'es')
 ```
 
 Then the reported and calculated t-values for difficulty:
+> Capping these values did not change the results for difficulty (t(59.78) = 1.29, p = .20, d = 0.33) or for response time (t(55.17) = 2.24, p = .03, d = 0.57).
 
 ```{r}
-compareValues(reportedValue = 1.29, obtainedValue = 1.31)
+reportObject <- compareValues2(reportedValue = "59.78", obtainedValue = t_test_diff_capped$parameter, valueType = 'df')
+reportObject <- compareValues2(reportedValue = "1.29", obtainedValue = -t_test_diff_capped$statistic[[1]], valueType = 't')
+reportObject <- compareValues2(reportedValue = ".20", obtainedValue = t_test_diff_capped$p.value, valueType = 'p')
+reportObject <- compareValues2(reportedValue = "0.33", obtainedValue = d_diff_capped, valueType = 'es')
 ```
 
-### Descriptive statistics
-Table 3 from the original paper provides all descriptive statistics computed.
+Some minor numerical errors.
 
-> here were no significant group differences with regard to trial difficulty, with a mean dot differ- ence of 4.64 for the monolinguals and 4.34 for the bilinguals.
+### Descriptive statistics
+
+Table 3 from the original paper provides descriptive statistics.
+
+> there were no significant group differences with regard to trial difficulty, with a mean dot difference of 4.64 for the monolinguals and 4.34 for the bilinguals.
 
 However, the table says the mean dot difference for monolinguals is 4.33, and the mean dot difference for bilinguals is 4.64.  
 
-![](http://web.stanford.edu/~skaltman/table3.png)
+![](images/table3.png)
 
 The following code chunk recreates this table:
+
 ```{r}
 #Mean and sd accuracies for mono- and bilinguals
 accuracy_tibble <-
@@ -329,139 +354,221 @@ summary_tibble <-
 kable(summary_tibble, digit = 2)
 ```
 
-All values provided in the orginal table match those provided in the text of the original paper, except for the following exceptions:
+![](images/table3.png)
+
+There appear to be some internal consistency issues here - the article text and the article table 3 do not always match up. Here are the discrepancies we spotted:
 
 - Mean dot difference for monolinguals. The original table states that the value is 4.33. The original text says:
 
-> There were no significant group differences with regard to trial difficulty, with a mean dot differ- ence of 4.64 for the monolinguals...
+> There were no significant group differences with regard to trial difficulty, with a mean dot difference of 4.64 for the monolinguals...
 
 - Mean dot difference for bilinguals. The original table states that the value is 4.64. The original text says:
 
-> There were no significant group differences with regard to trial difficulty, with a mean dot differ- ence of 4.64 for the monolinguals and 4.34 for the bilinguals.
+> There were no significant group differences with regard to trial difficulty, with a mean dot difference of 4.64 for the monolinguals and 4.34 for the bilinguals.
 
 - Standard deviation of choice response time for bilinguals. The text says:
 
 > However, the groups did differ with regards to choice response time; an independent samples t-test showed that bilinguals (M = 2679 ms, SD = 923 ms)...
 
-For these discrepancies, I will compare my obtained values to those in the table and in the text. 
+We will assume the table is the source of accurate values, and compare what we obtained to those values. 
 
 #### Accuracy
 Accuracy mean for monolinguals:
 ```{r}
-compareValues(reportedValue = 70.98, obtainedValue = 71.29)
+m <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("Monolinguals Mean")
+reportObject <- compareValues2(reportedValue = "70.98", obtainedValue = m, valueType = 'mean')
 ```
 
 Accuracy standard deviation for monolinguals:
 ```{r}
-compareValues(reportedValue = 1.06, obtainedValue = 1.07)
+sd <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("Monolinguals SD")
+reportObject <- compareValues2(reportedValue = "1.06", obtainedValue = sd, valueType = 'sd')
 ```
 
 Accuracy mean for bilinguals:
 ```{r}
-compareValues(reportedValue = 70.79, obtainedValue = 71.03)
+m <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("Bilinguals Mean")
+reportObject <- compareValues2(reportedValue = "70.79", obtainedValue = m, valueType = 'mean')
 ```
 
 Accuracy standard deviation for bilinguals:
 ```{r}
-compareValues(reportedValue = 1.23, obtainedValue = 1.30)
+sd <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("Bilinguals SD")
+reportObject <- compareValues2(reportedValue = "1.23", obtainedValue = sd, valueType = 'sd')
 ```
 
 Accuracy t-statistic
 ```{r}
-compareValues(reportedValue = .66, obtainedValue = .85)
+t <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("t-statistic")
+reportObject <- compareValues2(reportedValue = ".66", obtainedValue = t, valueType = 't')
 ```
 
 Accuracy df
 ```{r}
-compareValues(reportedValue = 58.73, obtainedValue = 57.82)
+df <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("df")
+reportObject <- compareValues2(reportedValue = "58.73", obtainedValue = df, valueType = 'df')
 ```
 
 Accuracy p-value
 ```{r}
-compareValues(reportedValue = .51, obtainedValue = .4, isP = TRUE)
+p <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("p-value")
+reportObject <- compareValues2(reportedValue = ".51", obtainedValue = p, valueType = 'p')
 ```
 
 Accuracy Cohen's d
 ```{r}
-compareValues(reportedValue = .17, obtainedValue = .22)
+d <- summary_tibble %>% filter(measure == "Accuracy (% correct)") %>% pull("Cohen's d")
+reportObject <- compareValues2(reportedValue = ".17", obtainedValue = d, valueType = 'es')
 ```
 
 #### Dot difference
+
 Mean dot difference for monolinguals:
 ```{r}
-#in text
-compareValues(reportedValue = 4.64, obtainedValue = 4.31)
+m <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("Monolinguals Mean")
+reportObject <- compareValues2(reportedValue = "4.64", obtainedValue = m, valueType = 'mean')
+```
 
-#in table
-compareValues(reportedValue = 4.33, obtainedValue = 4.31)
+SD dot difference for monolinguals:
+```{r}
+sd <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("Monolinguals SD")
+reportObject <- compareValues2(reportedValue = "1.07", obtainedValue = sd, valueType = 'sd')
 ```
 
 Mean dot difference for bilinguals:
 ```{r}
-#in text
-compareValues(reportedValue = 4.34, obtainedValue = 4.64)
+m <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("Bilinguals Mean")
+reportObject <- compareValues2(reportedValue = "4.34", obtainedValue = m, valueType = 'mean')
+```
 
-#in table
-compareValues(reportedValue = 4.64, obtainedValue = 4.64)
+SD dot difference for bilinguals:
+```{r}
+sd <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("Bilinguals SD")
+reportObject <- compareValues2(reportedValue = "1.03", obtainedValue = sd, valueType = 'sd')
 ```
 
 Dot diff t-statistic
 ```{r}
-compareValues(reportedValue = 1.25, obtainedValue = 1.29)
+t <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("t-statistic")
+reportObject <- compareValues2(reportedValue = "1.25", obtainedValue = -t, valueType = 't')
 ```
 
 Dot diff df
 ```{r}
-compareValues(reportedValue = 59.9, obtainedValue = 59.78)
+df <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("df")
+reportObject <- compareValues2(reportedValue = "59.9", obtainedValue = df, valueType = 'df')
 ```
 
 Dot diff p-value
 ```{r}
-compareValues(reportedValue = .26, obtainedValue = .2, isP = TRUE)
+p <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("p-value")
+reportObject <- compareValues2(reportedValue = ".26", obtainedValue = p, valueType = 'p')
 ```
 
 Dot diff Cohen's d
 ```{r}
-compareValues(reportedValue = .29, obtainedValue = .33)
+d <- summary_tibble %>% filter(measure == "Difficulty") %>% pull("Cohen's d")
+reportObject <- compareValues2(reportedValue = ".29", obtainedValue = d, valueType = 'es')
 ```
 
 #### Confidence response time
+
+Mean confidence response time for monolinguals:
+```{r}
+m <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("Monolinguals Mean")
+reportObject <- compareValues2(reportedValue = "1179", obtainedValue = m, valueType = 'mean')
+```
+
+SD of confidence response time for monolinguals:
+```{r}
+sd <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("Monolinguals SD")
+reportObject <- compareValues2(reportedValue = "318", obtainedValue = sd, valueType = 'sd')
+```
+
 Mean confidence response time for bilinguals:
 ```{r}
-compareValues(reportedValue = 1112, obtainedValue = 1111)
+m <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("Bilinguals Mean")
+reportObject <- compareValues2(reportedValue = "1112", obtainedValue = m, valueType = 'mean')
 ```
 
 SD of confidence response time for bilinguals:
 ```{r}
-compareValues(reportedValue = 280, obtainedValue = 176)
+sd <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("Bilinguals SD")
+reportObject <- compareValues2(reportedValue = "280", obtainedValue = sd, valueType = 'sd')
 ```
 
 Confidence response time t-statistic
 ```{r}
-compareValues(reportedValue = .89, obtainedValue = .90)
+t <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("t-statistic")
+reportObject <- compareValues2(reportedValue = ".89", obtainedValue = t, valueType = 't')
 ```
 
 Confidence response time df
 ```{r}
-compareValues(reportedValue = 58.77, obtainedValue = 58.80)
+df <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("df")
+reportObject <- compareValues2(reportedValue = "58.77", obtainedValue = df, valueType = 'df')
+```
+
+Confidence response time p
+```{r}
+p <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("p-value")
+reportObject <- compareValues2(reportedValue = "0.37", obtainedValue = p, valueType = 'p')
+```
+
+Confidence response time d
+```{r}
+d <- summary_tibble %>% filter(measure == "Response time confidence (ms)") %>% pull("Cohen's d")
+reportObject <- compareValues2(reportedValue = "0.23", obtainedValue = d, valueType = 'es')
 ```
 
 #### Choice response time
+
 Mean choice response time for monolinguals:
 ```{r}
-compareValues(reportedValue = 3360, obtainedValue = 3359)
+m <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("Monolinguals Mean")
+reportObject <- compareValues2(reportedValue = "3360", obtainedValue = m, valueType = 'mean')
+```
+
+Choice response time sd for monolinguals
+```{r}
+sd <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("Monolinguals SD")
+reportObject <- compareValues2(reportedValue = "1475", obtainedValue = sd, valueType = 'sd')
+```
+
+Mean choice response time for bilinguals:
+```{r}
+m <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("Bilinguals Mean")
+reportObject <- compareValues2(reportedValue = "2679", obtainedValue = m, valueType = 'mean')
 ```
 
 Choice response time sd for bilinguals
 ```{r}
-compareValues(reportedValue = 922, obtainedValue = 923)
+sd <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("Bilinguals SD")
+reportObject <- compareValues2(reportedValue = "922", obtainedValue = sd, valueType = 'sd')
 ```
 
 Degrees of freedom for choice response time:
 ```{r}
-compareValues(reportedValue = 50.38, obtainedValue = 50.39)
+df <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("df")
+reportObject <- compareValues2(reportedValue = "50.38", obtainedValue = df, valueType = 'df')
+```
+t-value for choice response time:
+```{r}
+t <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("t-statistic")
+reportObject <- compareValues2(reportedValue = "2.18", obtainedValue = t, valueType = 't')
 ```
 
+p-value for choice response time:
+```{r}
+p <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("p-value")
+reportObject <- compareValues2(reportedValue = "0.03", obtainedValue = p, valueType = 'p')
+```
+
+d for choice response time:
+```{r}
+d <- summary_tibble %>% filter(measure == "Response time choice (ms)") %>% pull("Cohen's d")
+reportObject <- compareValues2(reportedValue = "0.55", obtainedValue = d, valueType = 'es')
+```
 
 ### Inferential statistics
 
@@ -473,7 +580,7 @@ More details about the model were provided in Appendix A:
 
 > The multilevel regression analyses reported in this paper were conducted using the lme4 package in R (Bates, Maechler, & Bolker, 2011) Degrees of freedom and p-values were obtained using the Kenward-Roger approximation, as implemented in the pbkertest package (Halekoh & Hojsgaard, 2011)...Table A1 lists the various models we attempted to fit, Fig. A1 shows the BIC scores for all the response time models. Table A2 show the full model specification for model 3, which is the best-fitting model, and the model that is reported in the main text of the paper.
 
-![](http://web.stanford.edu/~skaltman/table_mixedeffects.png)
+![](images/table_mixedeffects.png)
 
 The following code chunk fits the specified model:
 
@@ -505,7 +612,7 @@ data_tidy2 <-
 # DOES NOT CONVERGE REGARDLESS OF ITERATIONS
 
 # try with ML instead of REML, but not using L-BFGS-B 
-library(lmerTest)  # for inference
+
 mod <- lmer( rt ~ group + block*group + (block | id), data = data_tidy2,
                         REML = FALSE )
 summary(mod)
@@ -515,114 +622,114 @@ summary(mod)
 
 Compares calculated participant intercept variance to reported value:
 ```{r}
-compareValues(reportedValue = 2380701, obtainedValue = 2274757)
+reportObject <- compareValues2(reportedValue = "2380701", obtainedValue = 2274757, valueType = 'other')
 ```
 
 Compares calculated variance of block random effect to reported value:
 ```{r}
-compareValues(reportedValue = 26127, obtainedValue = 21928)
+reportObject <- compareValues2(reportedValue = "26127", obtainedValue = 21928, valueType = 'other')
 ```
 
 Intercept: coefficient
 ```{r}
-compareValues(reportedValue = 3273, obtainedValue = 3272.74)
+reportObject <- compareValues2(reportedValue = "3273", obtainedValue = 3272.74, valueType = 'coeff')
 ```
 
 Intercept: SE
 ```{r}
-compareValues(reportedValue = 283, obtainedValue = 282.92)
+reportObject <- compareValues2(reportedValue = "283", obtainedValue = 282.92, valueType = 'se')
 ```
 
 Intercept: t-value
 ```{r}
-compareValues(reportedValue = 11.57, obtainedValue = 11.568)
+reportObject <- compareValues2(reportedValue = "11.57", obtainedValue = 11.568, valueType = 't')
 ```
 
 Intercept: DF
-```{r, warning=FALSE, message = FALSE}
-compareValues(reportedValue = 64.03, obtainedValue = 62.00)
+```{r}
+reportObject <- compareValues2(reportedValue = "64.03", obtainedValue = 62.00, valueType = 'df')
 ```
 
 Intercept: p-value
 ```{r}
-compareValues(reportedValue = .0001, obtainedValue = 0.0000000000000002)
+reportObject <- compareValues2(reportedValue = "eyeballMATCH", obtainedValue = 0.0000000000000002, valueType = 'p')
 ```
 
 Group: coefficient
 ```{r}
-compareValues(reportedValue = -283, obtainedValue = -282.43)
+reportObject <- compareValues2(reportedValue = "-283", obtainedValue = -282.43, valueType = 'coeff')
 ```
 
 Group: SE
 ```{r}
-compareValues(reportedValue = 400, obtainedValue = 400.11)
+reportObject <- compareValues2(reportedValue = "400", obtainedValue = 400.11, valueType = 'se')
 ```
 
 Group: t-value
 ```{r}
-compareValues(reportedValue = -.71, obtainedValue = -0.706)
+reportObject <- compareValues2(reportedValue = "-.71", obtainedValue = -0.706, valueType = 't')
 ```
 
 Group: DF
 ```{r}
-compareValues(reportedValue = 64.03, obtainedValue = 62.00)
+reportObject <- compareValues2(reportedValue = "64.03", obtainedValue = 62.00, valueType = 'df')
 ```
 
 Group: p-value
 ```{r}
-compareValues(reportedValue = .48, obtainedValue = 0.4829)
+reportObject <- compareValues2(reportedValue = ".48", obtainedValue = 0.4829, valueType = 'p')
 ```
 
 Block: coefficient
 ```{r}
-compareValues(reportedValue = 19, obtainedValue = 19.25)
+reportObject <- compareValues2(reportedValue = "19", obtainedValue = 19.25, valueType = 'coeff')
 ```
 
 Block: SE
 ```{r}
-compareValues(reportedValue = 31, obtainedValue = 31.12)
+reportObject <- compareValues2(reportedValue = "31", obtainedValue = 31.12, valueType = 'se')
 ```
 
 Block: t-value
 ```{r}
-compareValues(reportedValue = .62, obtainedValue = 0.618)
+reportObject <- compareValues2(reportedValue = ".62", obtainedValue = 0.618, valueType = 't')
 ```
 
 Block: DF
 ```{r}
-compareValues(reportedValue = 64.03, obtainedValue = 62.00)
+reportObject <- compareValues2(reportedValue = "64.03", obtainedValue = 62.00, valueType = 'df')
 ```
 
 Block: p-value
 ```{r}
-compareValues(reportedValue = .54, obtainedValue = 0.5386)
+reportObject <- compareValues2(reportedValue = ".54", obtainedValue = 0.5386, 'p')
 ```
 
 Group*block: coefficient
 ```{r}
-compareValues(reportedValue = -88, obtainedValue = -88.35)
+reportObject <- compareValues2(reportedValue = "-88", obtainedValue = -88.35, 'coeff')
 ```
 
 Group*block: SE
 ```{r}
-compareValues(reportedValue = 44, obtainedValue = 44.02)
+reportObject <- compareValues2(reportedValue = "44", obtainedValue = 44.02, 'se')
 ```
 
 Group*block: t-value
 ```{r}
-compareValues(reportedValue = -2.01, obtainedValue = -2.007)
+reportObject <- compareValues2(reportedValue = "-2.01", obtainedValue = -2.007, 't')
 ```
 
 Group*block: DF
 ```{r}
-compareValues(reportedValue = 64.03, obtainedValue = 62.00)
+reportObject <- compareValues2(reportedValue = "64.03", obtainedValue = 62.00, 'df')
 ```
 
 Group*block: p-value
 ```{r}
-compareValues(reportedValue = .05, obtainedValue = 0.0491)
+reportObject <- compareValues2(reportedValue = ".05", obtainedValue = 0.0491, 'p')
 ```
-![](http://web.stanford.edu/~skaltman/fig3.png)
+![](images/fig3.png)
 
 The following chunk recreates the above plot:
 
@@ -670,19 +777,59 @@ The error bars all appear longer than those in the orginal plot. The response ti
 
 Our initial attempt to reproduce analyses without the author's help led to many discrepancies. In our first contact with the author, he found that the wrong data file had been uploaded and provided the correct one (the differences were due to substantial amounts of rounding). When we used this file, some discrepancies were resolved (or became minor rather than major numerical errors), but many remained. Therefore, we contacted the author again. In our second contact, he reanalyzed the data himself and found numerous typos. We tried to reproduce his new results using additional details about these analyses with mixed success. Also, in some cases, he found no discrepancies with the published results even in cases in which we could not reproduce results. 
 
-Ultimately, because there are clearly (per the author) both major and minor numerical errors in the article, we not pursue finding the ultimate reasons for remaining discrepancies. 
+Ultimately, because there are clearly (per the author) both major and minor numerical errors in the article, we cannot pursue finding the ultimate reasons for remaining discrepancies. 
 
 ```{r}
-codReport(Report_Type = 'joint',
-          Article_ID = 'DvcDF', 
-          Insufficient_Information_Errors = 0,
-          Decision_Errors = 0, 
-          Major_Numerical_Errors = 10, 
-          Minor_Numerical_Errors = 31,
-          Author_Assistance = T)
+reportObject$Article_ID <- "DvcDF"
+reportObject$affectsConclusion <- "unclear"
+reportObject$error_typo <- 0
+reportObject$error_specification <- 1
+reportObject$error_analysis <- 0
+reportObject$error_data <- 1
+reportObject$error_unidentified <- 1
+reportObject$Author_Assistance <- T
+reportObject$resolved_typo <- 1
+reportObject$resolved_specification <- 0
+reportObject$resolved_analysis <- 0
+reportObject$resolved_data <- 1
+reportObject$correctionSuggested <- NA
+reportObject$correctionPublished <- NA
+
+# decide on final outcome
+if(reportObject$Decision_Errors > 0 | reportObject$Major_Numerical_Errors > 0 | reportObject$Insufficient_Information_Errors > 0){
+  reportObject$finalOutcome <- "Failure"
+  if(reportObject$Author_Assistance == T){
+    reportObject$finalOutcome <- "Failure despite author assistance"
+  }
+}else{
+  reportObject$finalOutcome <- "Success"
+  if(reportObject$Author_Assistance == T){
+    reportObject$finalOutcome <- "Success with author assistance"
+  }
+}
+
+# save the report object
+filename <- paste0("reportObject_", reportObject$Article_ID,".csv")
+write_csv(reportObject, filename)
+
 ```
 
-# Session information
+## Report Object
+
+```{r, echo = FALSE}
+# display report object in chunks
+kable(reportObject[2:10], align = 'l')
+kable(reportObject[11:20], align = 'l')
+kable(reportObject[21:25], align = 'l')
+kable(reportObject[26:30], align = 'l')
+kable(reportObject[31:35], align = 'l')
+kable(reportObject[36:40], align = 'l')
+kable(reportObject[41:45], align = 'l')
+kable(reportObject[46:51], align = 'l')
+kable(reportObject[52:57], align = 'l')
+```
+
+## Session information
 
 ```{r session_info, include=TRUE, echo=TRUE, results='markup'}
 devtools::session_info()
