@@ -782,13 +782,13 @@ Ultimately, because there are clearly (per the author) both major and minor nume
 ```{r}
 reportObject$Article_ID <- "DvcDF"
 reportObject$affectsConclusion <- "unclear"
-reportObject$error_typo <- 0
+reportObject$error_typo <- 1
 reportObject$error_specification <- 1
 reportObject$error_analysis <- 0
 reportObject$error_data <- 1
 reportObject$error_unidentified <- 1
 reportObject$Author_Assistance <- T
-reportObject$resolved_typo <- 1
+reportObject$resolved_typo <- 0
 reportObject$resolved_specification <- 0
 reportObject$resolved_analysis <- 0
 reportObject$resolved_data <- 1
